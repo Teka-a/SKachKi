@@ -25,13 +25,17 @@ private:
     QString sendShortTermOpenKey(QString login);
     void generateShortTermKey(uint1024_t &shortTermPrivateKey);
     Point mqv(Point longTermOpenKey, Point shortTermOpenKey);
-
-
+    QString sendContestsGeneralInfo();
+    QString sendContestDetailedInfo(QString contestId);
+    QString send3FutureContests();
+    QString sendHorsesForContest(QString contestId);
+    QString regForContest(QString contestId, QString horseId, QString jockeyLogin);
 public:
     Functions();
     QString parse(QString dataFromClient, QMap<QTcpSocket*, QVector<QString>> &sockets, QTcpSocket* socket);
     QString convertTextToHex(QString text);
     QString checkPassword(QString login, QString password);
+
 
 };
 

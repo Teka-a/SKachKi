@@ -47,6 +47,7 @@ private:
     QTcpSocket * mTcpSocket;
 
     QList<QTcpSocket*> list;
+    //{socket : [stok.x, stok.y, login]}
     QMap<QTcpSocket*, QVector<QString>> sockets;
     //int server_status;
 };
