@@ -21,7 +21,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: c_u_h; Type: TABLE; Schema: public; Owner: server
+-- Name: c_u_h; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.c_u_h (
@@ -34,10 +34,10 @@ CREATE TABLE public.c_u_h (
 );
 
 
-ALTER TABLE public.c_u_h OWNER TO server;
+ALTER TABLE public.c_u_h OWNER TO postgres;
 
 --
--- Name: c_u_h_id_seq; Type: SEQUENCE; Schema: public; Owner: server
+-- Name: c_u_h_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE public.c_u_h_id_seq
@@ -49,17 +49,17 @@ CREATE SEQUENCE public.c_u_h_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.c_u_h_id_seq OWNER TO server;
+ALTER TABLE public.c_u_h_id_seq OWNER TO postgres;
 
 --
--- Name: c_u_h_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: server
+-- Name: c_u_h_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
 ALTER SEQUENCE public.c_u_h_id_seq OWNED BY public.c_u_h.id;
 
 
 --
--- Name: contests; Type: TABLE; Schema: public; Owner: server
+-- Name: contests; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.contests (
@@ -73,10 +73,10 @@ CREATE TABLE public.contests (
 );
 
 
-ALTER TABLE public.contests OWNER TO server;
+ALTER TABLE public.contests OWNER TO postgres;
 
 --
--- Name: contests_id_seq; Type: SEQUENCE; Schema: public; Owner: server
+-- Name: contests_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE public.contests_id_seq
@@ -88,17 +88,17 @@ CREATE SEQUENCE public.contests_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.contests_id_seq OWNER TO server;
+ALTER TABLE public.contests_id_seq OWNER TO postgres;
 
 --
--- Name: contests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: server
+-- Name: contests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
 ALTER SEQUENCE public.contests_id_seq OWNED BY public.contests.id;
 
 
 --
--- Name: hippodrome; Type: TABLE; Schema: public; Owner: server
+-- Name: hippodrome; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.hippodrome (
@@ -109,10 +109,10 @@ CREATE TABLE public.hippodrome (
 );
 
 
-ALTER TABLE public.hippodrome OWNER TO server;
+ALTER TABLE public.hippodrome OWNER TO postgres;
 
 --
--- Name: hippodrome_id_seq; Type: SEQUENCE; Schema: public; Owner: server
+-- Name: hippodrome_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE public.hippodrome_id_seq
@@ -124,17 +124,17 @@ CREATE SEQUENCE public.hippodrome_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.hippodrome_id_seq OWNER TO server;
+ALTER TABLE public.hippodrome_id_seq OWNER TO postgres;
 
 --
--- Name: hippodrome_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: server
+-- Name: hippodrome_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
 ALTER SEQUENCE public.hippodrome_id_seq OWNED BY public.hippodrome.id;
 
 
 --
--- Name: horses; Type: TABLE; Schema: public; Owner: server
+-- Name: horses; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.horses (
@@ -147,10 +147,10 @@ CREATE TABLE public.horses (
 );
 
 
-ALTER TABLE public.horses OWNER TO server;
+ALTER TABLE public.horses OWNER TO postgres;
 
 --
--- Name: horses_id_seq; Type: SEQUENCE; Schema: public; Owner: server
+-- Name: horses_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE public.horses_id_seq
@@ -162,17 +162,17 @@ CREATE SEQUENCE public.horses_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.horses_id_seq OWNER TO server;
+ALTER TABLE public.horses_id_seq OWNER TO postgres;
 
 --
--- Name: horses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: server
+-- Name: horses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
 ALTER SEQUENCE public.horses_id_seq OWNED BY public.horses.id;
 
 
 --
--- Name: status; Type: TABLE; Schema: public; Owner: server
+-- Name: status; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.status (
@@ -181,10 +181,10 @@ CREATE TABLE public.status (
 );
 
 
-ALTER TABLE public.status OWNER TO server;
+ALTER TABLE public.status OWNER TO postgres;
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: server
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.users (
@@ -201,10 +201,10 @@ CREATE TABLE public.users (
 );
 
 
-ALTER TABLE public.users OWNER TO server;
+ALTER TABLE public.users OWNER TO postgres;
 
 --
--- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: server
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE public.users_id_seq
@@ -216,52 +216,52 @@ CREATE SEQUENCE public.users_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.users_id_seq OWNER TO server;
+ALTER TABLE public.users_id_seq OWNER TO postgres;
 
 --
--- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: server
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- Name: c_u_h id; Type: DEFAULT; Schema: public; Owner: server
+-- Name: c_u_h id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.c_u_h ALTER COLUMN id SET DEFAULT nextval('public.c_u_h_id_seq'::regclass);
 
 
 --
--- Name: contests id; Type: DEFAULT; Schema: public; Owner: server
+-- Name: contests id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.contests ALTER COLUMN id SET DEFAULT nextval('public.contests_id_seq'::regclass);
 
 
 --
--- Name: hippodrome id; Type: DEFAULT; Schema: public; Owner: server
+-- Name: hippodrome id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.hippodrome ALTER COLUMN id SET DEFAULT nextval('public.hippodrome_id_seq'::regclass);
 
 
 --
--- Name: horses id; Type: DEFAULT; Schema: public; Owner: server
+-- Name: horses id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.horses ALTER COLUMN id SET DEFAULT nextval('public.horses_id_seq'::regclass);
 
 
 --
--- Name: users id; Type: DEFAULT; Schema: public; Owner: server
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
 
 --
--- Data for Name: c_u_h; Type: TABLE DATA; Schema: public; Owner: server
+-- Data for Name: c_u_h; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.c_u_h (id, chip_time, place, contest_id, horse_id, jockey_id) FROM stdin;
@@ -276,7 +276,7 @@ COPY public.c_u_h (id, chip_time, place, contest_id, horse_id, jockey_id) FROM s
 
 
 --
--- Data for Name: contests; Type: TABLE DATA; Schema: public; Owner: server
+-- Data for Name: contests; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.contests (id, name, date, "time", hippodrome_id, status, info) FROM stdin;
@@ -287,7 +287,7 @@ COPY public.contests (id, name, date, "time", hippodrome_id, status, info) FROM 
 
 
 --
--- Data for Name: hippodrome; Type: TABLE DATA; Schema: public; Owner: server
+-- Data for Name: hippodrome; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.hippodrome (id, name, address, description) FROM stdin;
@@ -296,7 +296,7 @@ COPY public.hippodrome (id, name, address, description) FROM stdin;
 
 
 --
--- Data for Name: horses; Type: TABLE DATA; Schema: public; Owner: server
+-- Data for Name: horses; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.horses (id, name, sex, age, owner_id, available) FROM stdin;
@@ -311,7 +311,7 @@ COPY public.horses (id, name, sex, age, owner_id, available) FROM stdin;
 
 
 --
--- Data for Name: status; Type: TABLE DATA; Schema: public; Owner: server
+-- Data for Name: status; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.status (id, name) FROM stdin;
@@ -322,7 +322,7 @@ COPY public.status (id, name) FROM stdin;
 
 
 --
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: server
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.users (id, name, surname, age, phone, login, password, status_id, ltok, address) FROM stdin;
@@ -340,42 +340,42 @@ COPY public.users (id, name, surname, age, phone, login, password, status_id, lt
 
 
 --
--- Name: c_u_h_id_seq; Type: SEQUENCE SET; Schema: public; Owner: server
+-- Name: c_u_h_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
 SELECT pg_catalog.setval('public.c_u_h_id_seq', 9, true);
 
 
 --
--- Name: contests_id_seq; Type: SEQUENCE SET; Schema: public; Owner: server
+-- Name: contests_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
 SELECT pg_catalog.setval('public.contests_id_seq', 3, true);
 
 
 --
--- Name: hippodrome_id_seq; Type: SEQUENCE SET; Schema: public; Owner: server
+-- Name: hippodrome_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
 SELECT pg_catalog.setval('public.hippodrome_id_seq', 33, true);
 
 
 --
--- Name: horses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: server
+-- Name: horses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
 SELECT pg_catalog.setval('public.horses_id_seq', 7, true);
 
 
 --
--- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: server
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
 SELECT pg_catalog.setval('public.users_id_seq', 10, true);
 
 
 --
--- Name: contests contests_pkey; Type: CONSTRAINT; Schema: public; Owner: server
+-- Name: contests contests_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.contests
@@ -383,7 +383,7 @@ ALTER TABLE ONLY public.contests
 
 
 --
--- Name: hippodrome hippodrome_pkey; Type: CONSTRAINT; Schema: public; Owner: server
+-- Name: hippodrome hippodrome_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.hippodrome
@@ -391,7 +391,7 @@ ALTER TABLE ONLY public.hippodrome
 
 
 --
--- Name: horses horses_pkey; Type: CONSTRAINT; Schema: public; Owner: server
+-- Name: horses horses_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.horses
@@ -399,7 +399,7 @@ ALTER TABLE ONLY public.horses
 
 
 --
--- Name: status status_pkey; Type: CONSTRAINT; Schema: public; Owner: server
+-- Name: status status_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.status
@@ -407,7 +407,7 @@ ALTER TABLE ONLY public.status
 
 
 --
--- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: server
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.users
@@ -415,7 +415,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: c_u_h fk_contest; Type: FK CONSTRAINT; Schema: public; Owner: server
+-- Name: c_u_h fk_contest; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.c_u_h
@@ -423,7 +423,7 @@ ALTER TABLE ONLY public.c_u_h
 
 
 --
--- Name: c_u_h fk_horse; Type: FK CONSTRAINT; Schema: public; Owner: server
+-- Name: c_u_h fk_horse; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.c_u_h
@@ -431,7 +431,7 @@ ALTER TABLE ONLY public.c_u_h
 
 
 --
--- Name: c_u_h fk_jockey; Type: FK CONSTRAINT; Schema: public; Owner: server
+-- Name: c_u_h fk_jockey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.c_u_h
@@ -439,7 +439,7 @@ ALTER TABLE ONLY public.c_u_h
 
 
 --
--- Name: horses fk_owner; Type: FK CONSTRAINT; Schema: public; Owner: server
+-- Name: horses fk_owner; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.horses
@@ -447,7 +447,7 @@ ALTER TABLE ONLY public.horses
 
 
 --
--- Name: users fk_status; Type: FK CONSTRAINT; Schema: public; Owner: server
+-- Name: users fk_status; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.users
@@ -455,7 +455,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: contests hippodrome; Type: FK CONSTRAINT; Schema: public; Owner: server
+-- Name: contests hippodrome; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.contests
