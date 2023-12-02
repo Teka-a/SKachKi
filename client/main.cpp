@@ -4,6 +4,8 @@
 #include "curve.h"
 #include <QApplication>
 #include <QStyleFactory>
+#include "formnoconnection.h"
+
 Client * Client::pInstance = 0;
 ClientDestroyer Client::destroyer;
 QTcpSocket * Client::mTcpSocket;
@@ -41,7 +43,18 @@ int main(int argc, char *argv[])
     qApp->setPalette(darkPalette);
 
     qApp->setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }");
-    Client *cl = Client::getInstance();
-    MainForm window;
+    QTcpSocket *mTcpSocket = new QTcpSocket();
+    mTcpSocket->connectToHost("127.0.0.1", 54345);
+    bool connected = mTcpSocket->waitForConnected();
+    mTcpSocket->close();
+    if (!connected) {
+        FormNoConnection *f = new FormNoConnection;
+        f->show();
+    }
+    else {
+        Client *cl = Client::getInstance();
+        MainForm window;
+    }
+
     return app.exec();
 }

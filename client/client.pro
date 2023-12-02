@@ -16,6 +16,7 @@ SOURCES += \
     curve.cpp \
     formcontests.cpp \
     formdetailinfo.cpp \
+    formnoconnection.cpp \
     formregcontest.cpp \
     horse.cpp \
     jockey.cpp \
@@ -33,6 +34,7 @@ HEADERS += \
     curve.h \
     formcontests.h \
     formdetailinfo.h \
+    formnoconnection.h \
     formregcontest.h \
     horse.h \
     jockey.h \
@@ -45,6 +47,7 @@ FORMS += \
     authform.ui \
     formcontests.ui \
     formdetailinfo.ui \
+    formnoconnection.ui \
     formregcontest.ui \
     mainform.ui
 

@@ -20,12 +20,10 @@ MyTcpServer::MyTcpServer(QObject *parent) : QObject(parent)
     connect(mTcpServer, &QTcpServer::newConnection,
             this, &MyTcpServer::slotNewConnection);
 
-    if (!mTcpServer->listen(QHostAddress::Any, 33333)) {
+    if (!mTcpServer->listen(QHostAddress::Any, 54345)) {
         qDebug() << "SKachKi server is not started";
     } else {
         //server_status=1;
-        Functions f;
-        QTcpSocket* mTcpSocket;
         //qDebug() << f.parse("regForContest&1&3&Joc4", sockets, mTcpSocket);
 
         qDebug() << "SKachKi server is started";
