@@ -65,7 +65,7 @@
      <property name="widgetResizable">
       <bool>true</bool>
      </property>
-     <widget class="QWidget" name="scrollAreaWidgetContents">
+     <widget class="QWidget" name="scroll">
       <property name="geometry">
        <rect>
         <x>0</x>
@@ -111,7 +111,7 @@
          <item>
           <widget class="QLabel" name="label_5">
            <property name="text">
-            <string> </string>
+            <string/>
            </property>
           </widget>
          </item>

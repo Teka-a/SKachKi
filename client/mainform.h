@@ -6,6 +6,8 @@
 #include "authform.h"
 #include "formdetailinfo.h"
 #include "formcontests.h"
+#include "formadminaccount.h"
+
 namespace Ui {
 class MainForm;
 }
@@ -25,11 +27,20 @@ private slots:
 
     void on_contestsButton_clicked();
 
+    void on_accountButton_clicked();
+
+    void on_leftContestMoreInfo_clicked();
+
+    void on_rightContestMoreInfo_clicked();
+
 private:
     Ui::MainForm *ui;
     AuthForm *authForm;
     FormDetailInfo *infoContestWindow;
     FormContests *contestsWindow;
+
+    FormAdminAccount *adminPanel;
+
     void setNoInfoRight();
     void setNoInfoCentral();
     void setNoInfoLeft();

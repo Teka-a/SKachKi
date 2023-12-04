@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     qApp->setPalette(darkPalette);
 
     qApp->setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }");
-    QTcpSocket *mTcpSocket = new QTcpSocket();
+    /*QTcpSocket *mTcpSocket = new QTcpSocket();
     mTcpSocket->connectToHost("127.0.0.1", 54345);
     bool connected = mTcpSocket->waitForConnected();
     mTcpSocket->close();
@@ -54,7 +54,9 @@ int main(int argc, char *argv[])
     else {
         Client *cl = Client::getInstance();
         MainForm window;
-    }
-
+    }*/
+    Client *cl = Client::getInstance();
+    MainForm window;
+    qDebug() << "end";
     return app.exec();
 }

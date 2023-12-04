@@ -158,7 +158,8 @@ QString Functions::sendContestsGeneralInfo()
     QString responce = "contestsList";
     QSqlQuery query;
     QString queryState = "SELECT c.id, c.name AS contestname, c.date, c.time, c.status, h.name AS placename FROM contests AS c "
-                         "JOIN hippodrome AS h ON h.id = c.hippodrome_id";
+                         "JOIN hippodrome AS h ON h.id = c.hippodrome_id "
+                         "ORDER BY c.date DESC";
     query.prepare(queryState);
     query.exec();
 
@@ -248,7 +249,8 @@ QString Functions::sendContestDetailedInfo(QString contestId)
     queryState = "SELECT c_u_h.chip_time AS time, c_u_h.place AS place, horses.name AS horse, users.name AS name, users.surname AS surname FROM c_u_h "
                  "JOIN horses ON horses.id = c_u_h.horse_id "
                  "JOIN users  ON users.id = c_u_h.jockey_id "
-                 "WHERE contest_id = :contestId";
+                 "WHERE contest_id = :contestId"
+                 "ORDER BY time DESC";
     query.prepare(queryState);
     query.bindValue(":contestId", contestId);
     //qDebug() << query.executedQuery();
@@ -359,7 +361,7 @@ QString Functions::sendHorsesForContest(QString contestId)
     while(query.next()){
         responce += query.value(name).toString();
     }
-    queryState = "SELECT h.id, h.name AS horseName, h.sex, h.age, h.available, u.name, u.surname FROM horses AS h "
+    queryState = "SELECT h.id, h.name AS horseName, h.sex, h.birth_date AS age, h.available, u.name, u.surname FROM horses AS h "
                  "INNER JOIN users AS u ON u.id = h.owner_id";
 
     query.prepare(queryState);
@@ -374,6 +376,7 @@ QString Functions::sendHorsesForContest(QString contestId)
     const int ownerName = rec.indexOf("name");
     const int ownerSurname = rec.indexOf("surname");
     QString horses = "";
+    QDate current = QDate::currentDate();
     while (query.next()) {
         //qDebug() << query.value(horseAvailable).toString();
         if (query.value(horseAvailable).toString() != "true")
@@ -386,10 +389,12 @@ QString Functions::sendHorsesForContest(QString contestId)
                 break;
         }
         if (i == horseIdsRegistered.size()) {
+            int age = current.year() - QDate::fromString(query.value(horseAge).toString(), "yyyy-MM-dd").year();
+            qDebug() << "Age" << QString::number(age);
             horses += "&" + id +
                       "&" + query.value(horseName).toString() +
                       "&" + query.value(horseSex).toString() +
-                      "&" + query.value(horseAge).toString() +
+                      "&" + QString::number(age) +
                       "&" + query.value(ownerName).toString() + " " + query.value(ownerSurname).toString();
         }
 
@@ -410,7 +415,6 @@ QString Functions::sendHorsesForContest(QString contestId)
 
 QString Functions::regForContest(QString contestId, QString horseId, QString jockeyLogin)
 {
-    qDebug() << "registration";
     QString responce = "registration&";
     QSqlQuery query;
     QString queryState = "SELECT c_u_h.horse_id AS horseid, users.login AS login FROM c_u_h "
@@ -485,6 +489,144 @@ QString Functions::regForContest(QString contestId, QString horseId, QString joc
     //queryState
 }
 
+QString Functions::regNewUser(QString name, QString surname, QString statusId, QString phone, QString address, QString birthDate, QString login, QString password, QString ltok)
+{
+    QString responce = "userRegistration&";
+
+    password = password.toUtf8().toHex();
+    password = getHash512(password);
+    qDebug() << "Hash" << password;
+    QSqlQuery query;
+    QString queryState = "INSERT INTO users (name, surname, phone, login, password, status_id, ltok, address, birth_date) "
+                         "VALUES (:name, :surname, :phone, :login, :password, :status_id, :ltok, :address, :birth_date)";
+    query.prepare(queryState);
+    query.bindValue(":name", name);
+    query.bindValue(":surname", surname);
+    query.bindValue(":phone", phone);
+    query.bindValue(":login", login);
+    query.bindValue(":password", password);
+    query.bindValue(":status_id", statusId);
+    query.bindValue(":ltok", ltok);
+    query.bindValue(":address", address);
+    query.bindValue(":birth_date", birthDate);
+    query.exec();
+
+    qDebug() << "insert" << query.executedQuery();
+    queryState = "SELECT id FROM users "
+                 "WHERE login = :login";
+    query.prepare(queryState);
+    query.bindValue(":login", login);
+    qDebug() << query.executedQuery();
+    query.exec();
+    int c = 0;
+    while(query.next()){
+        c += 1;
+    }
+    if (c > 0) {
+        responce += "success";
+    }
+    else {
+        responce += "failed";
+    }
+    return responce;
+}
+
+
+QString Functions::regNewContest(QString name, QString date, QString time, QString placeId, QString status, QString info)
+{
+    QString responce = "contestRegistration&";
+    QSqlQuery query;
+    QString queryState = "INSERT INTO contests (name, date, time, hippodrome_id, status, info) "
+                         "VALUES (:name, :date, :time, :place, :status, :info)";
+    query.prepare(queryState);
+    query.bindValue(":name", name);
+    query.bindValue(":date", date);
+    query.bindValue(":time", time);
+    query.bindValue(":place", placeId);
+    query.bindValue(":status", status);
+    query.bindValue(":info", info);
+    query.exec();
+
+    qDebug() << "insert" << query.executedQuery();
+    queryState = "SELECT id FROM contests "
+                 "WHERE name = :name";
+    query.prepare(queryState);
+    query.bindValue(":name", name);
+    qDebug() << query.executedQuery();
+    query.exec();
+    int c = 0;
+    while(query.next()){
+        c += 1;
+    }
+    if (c > 0) {
+        responce += "success";
+    }
+    else {
+        responce += "failed";
+    }
+    return responce;
+}
+
+
+QString Functions::sendPlaces()
+{
+    QString responce = "places&";
+    QSqlQuery query;
+    QString queryState = "SELECT * FROM hippodrome";
+    query.prepare(queryState);
+    query.exec();
+
+    QSqlRecord rec = query.record();
+    const int id = rec.indexOf("id");
+    const int name = rec.indexOf("name");
+    const int address = rec.indexOf("address");
+    const int description = rec.indexOf("description");
+
+
+    QString places = "";
+    while(query.next()){
+        places += "&" + query.value(id).toString() +
+                  "&" + query.value(name).toString() +
+                  "&" + query.value(address).toString() +
+                  "&" + query.value(description).toString();
+    }
+    responce += places;
+    qDebug() << "Places" << responce;
+
+    return responce;
+}
+
+QString Functions::regNewPlace(QString name, QString address, QString description)
+{
+    QString responce = "placeRegistration&";
+    QSqlQuery query;
+    QString queryState = "INSERT INTO hippodrome (name, address, description) "
+                         "VALUES (:name, :address, :description)";
+    query.prepare(queryState);
+    query.bindValue(":name", name);
+    query.bindValue(":address", address);
+    query.bindValue(":description", description);
+    query.exec();
+
+    qDebug() << "insert" << query.executedQuery();
+    queryState = "SELECT id FROM hippodrome "
+                 "WHERE name = :name";
+    query.prepare(queryState);
+    query.bindValue(":name", name);
+    qDebug() << query.executedQuery();
+    query.exec();
+    int c = 0;
+    while(query.next()){
+        c += 1;
+    }
+    if (c > 0) {
+        responce += "success";
+    }
+    else {
+        responce += "failed";
+    }
+    return responce;
+}
 
 
 QString Functions::parse(QString dataFromClient, QMap<QTcpSocket*, QVector<QString>> &sockets, QTcpSocket* socket)
@@ -546,6 +688,20 @@ QString Functions::parse(QString dataFromClient, QMap<QTcpSocket*, QVector<QStri
     }
     else if (list[0] == "regForContest") {
         return regForContest(list[1], list[2], list[3]);
+    }
+    else if (list[0] == "regNewUser") {
+        return regNewUser(list[1], list[2], list[3],
+                          list[4], list[5], list[6],
+                          list[7], list[8], list[9] + "&" + list[10]);
+    }
+    else if (list[0] == "regNewContest") {
+        return regNewContest(list[1], list[2], list[3], list[4], list[5], list[6]);
+    }
+    else if (list[0] == "regNewPlace") {
+        return regNewPlace(list[1], list[2], list[3]);
+    }
+    else if (list[0] == "requestPlaces") {
+        return sendPlaces();
     }
 
     return "get it!";

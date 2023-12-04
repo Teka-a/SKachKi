@@ -178,8 +178,8 @@ void Client::slotServerRead(){
         QByteArray hex = QByteArray::fromHex(array.toUtf8());
         array = hex.data();
 
-        //qDebug() << "slotServerRead after";
-        //qDebug() << array;
+        qDebug() << "slotServerRead after";
+        qDebug() << array;
         QStringList list = array.split("&", Qt::SkipEmptyParts);
         if(list[0] == "openKey"){
             //qDebug() << "sir";
@@ -288,6 +288,36 @@ void Client::slotServerRead(){
         }
         else if (list[0] == "registration") {
             qDebug() << list[0] << list[1] << list.size();
+        }
+        else if (list[0] == "userRegistration") {
+            if (list[1] == "success")
+                emit registrationStatus("s");
+            else if (list[1] == "failed")
+                emit registrationStatus("f");
+        }
+        else if (list[0] == "contestRegistration") {
+            if (list[1] == "success")
+                emit registrationContestStatus("s");
+            else if (list[1] == "failed")
+                emit registrationContestStatus("f");
+        }
+        else if (list[0] == "placeRegistration") {
+            if (list[1] == "success")
+                emit registrationPlaceStatus("s");
+            else if (list[1] == "failed")
+                emit registrationPlaceStatus("f");
+        }
+        else if (list[0] == "places") {
+            QVector<Place> places;
+            int placesNum = (list.size() - 1) / 4;
+            for (int i = 0; i < placesNum; ++i) {
+                Place place (list[i * 4 + 1],
+                            list[i * 4 + 2],
+                            list[i * 4 + 3],
+                            list[i * 4 + 4]);
+                places.append(place);
+            }
+            emit receivedPlaces(places);
         }
     }
 

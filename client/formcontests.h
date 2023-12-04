@@ -2,6 +2,7 @@
 #define FORMCONTESTS_H
 
 #include <QWidget>
+#include <QPushButton>
 #include "client.h"
 #include "communication.h"
 
@@ -18,7 +19,9 @@ public:
     explicit FormContests(QWidget *parent = nullptr);
     ~FormContests();
 private slots:
-    void setInfo(QVector<Contest>);
+    void setInfo(QVector<Contest> contests);
+    void showMoreInfoFuture();
+    void showMoreInfoPassed();
 private:
     Ui::FormContests *ui;
 };

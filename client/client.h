@@ -115,10 +115,12 @@ signals:
 
     void receivedContests(QVector<Contest> contests);
     void receivedContest(Contest contest, Place hippodrome, QVector<ParticipantPair> participants);
-
+    void receivedPlaces(QVector<Place> places);
     void receivedFutureContestsForMain(QVector<Contest> contests);
     void receivedHorsesForContest(QString contestId, QString contestName, QVector<Horse> horsesList);
-
+    void registrationStatus(QString status);
+    void registrationContestStatus(QString status);
+    void registrationPlaceStatus(QString status);
 
 public slots:
     void slotServerRead();

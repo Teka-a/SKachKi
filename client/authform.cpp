@@ -90,8 +90,10 @@ void AuthForm::authenticate(QString status, QString userStatus)
     if (status == "success"){
         Client::getInstance()->setUserStatus(userStatus);
         this->close();
-        request3Contests();
         emit successLogin();
+        request3Contests();
+        qDebug() << "requested";
+        //emit successLogin();
     } else if (status == "failed"){
         Client::getInstance()->resetPersonalData();
         ui->error->setText("Неверные реквизиты для входа");

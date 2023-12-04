@@ -13,6 +13,8 @@ MainForm::MainForm(QWidget *parent) :
     ui->centralContest->setStyleSheet("QGroupBox::title{font-size:40pt;}");
     contestsWindow = new FormContests;
     infoContestWindow = new FormDetailInfo;
+    adminPanel = new FormAdminAccount;
+
     authForm = new AuthForm;
     authForm->show();
 
@@ -39,6 +41,7 @@ MainForm::~MainForm()
 
 void MainForm::anons()
 {
+    qDebug() << "show";
     MainForm::show();
 }
 
@@ -114,6 +117,7 @@ void MainForm::setInfoLeft(Contest contest)
 
 void MainForm::renderInfo3Contests(QVector<Contest> contests)
 {
+    qDebug() << "com";
     if (contests.size() == 3) {
         setInfoRight(contests[0]);
         setInfoCentral(contests[1]);
@@ -134,6 +138,7 @@ void MainForm::renderInfo3Contests(QVector<Contest> contests)
         setNoInfoCentral();
         setNoInfoLeft();
     }
+    //MainForm::show();
 }
 
 
@@ -148,5 +153,35 @@ void MainForm::on_contestsButton_clicked()
 {
     qDebug() << "contests";
     requestGeneralInfoContests();
+}
+
+
+void MainForm::on_accountButton_clicked()
+{
+    qDebug() << Client::getInstance()->getUserStatus();
+    if (Client::getInstance()->getUserStatus() == "admin") {
+        requestPlaces();
+        //adminPanel->show();
+    }
+    else if (Client::getInstance()->getUserStatus() == "owner") {
+
+    }
+    else if (Client::getInstance()->getUserStatus() == "jockey") {
+
+    }
+}
+
+
+void MainForm::on_leftContestMoreInfo_clicked()
+{
+    qDebug() << ui->leftContestMoreInfo->property("id").toInt();
+    requestDetailedInfoContest(QString::number(ui->leftContestMoreInfo->property("id").toInt()));
+}
+
+
+void MainForm::on_rightContestMoreInfo_clicked()
+{
+    qDebug() << ui->rightContestMoreInfo->property("id").toInt();
+    requestDetailedInfoContest(QString::number(ui->rightContestMoreInfo->property("id").toInt()));
 }
 

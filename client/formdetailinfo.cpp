@@ -40,25 +40,83 @@ void FormDetailInfo::setDetailedInfo(Contest contest, Place hippodrome, QVector<
         }
     }
     ui->contestLJ->setText("Осталось мест: " + QString::number(6 - registered));
-    ui->label_2->setStyleSheet("color : rgb(166, 166, 166);");
-    ui->label_17->setStyleSheet("color : rgb(166, 166, 166);");
-    ui->j1->setText(participants[0].jockey);
-    ui->h1->setText(participants[0].horseName);
+    ui->jockey->setStyleSheet("color : rgb(166, 166, 166);");
+    ui->horse->setStyleSheet("color : rgb(166, 166, 166);");
+    ui->ContestName->setStyleSheet("QLabel { color : rgb(255, 218, 185); }");
+    ui->Registered->setStyleSheet("QLabel { color : rgb(255, 218, 185); }");
 
-    ui->j2->setText(participants[1].jockey);
-    ui->h2->setText(participants[1].horseName);
+    if (contest.isPassed()) {
+        ui->Registered->setText("Результаты");
+        ui->place->hide();
+        ui->time->hide();
 
-    ui->j3->setText(participants[2].jockey);
-    ui->h3->setText(participants[2].horseName);
+        ui->p1->setVisible(true);
+        ui->p1->setText("1");
+        ui->j1->setText(participants[0].jockey);
+        ui->h1->setText(participants[0].horseName);
+        ui->t1->setVisible(true);
+        ui->t1->setText(participants[0].time.toString());
 
-    ui->j4->setText(participants[3].jockey);
-    ui->h4->setText(participants[3].horseName);
+        ui->p2->setText("2");
+        ui->j2->setText(participants[1].jockey);
+        ui->h2->setText(participants[1].horseName);
+        ui->t2->setText(participants[1].time.toString());
 
-    ui->j5->setText(participants[4].jockey);
-    ui->h5->setText(participants[4].horseName);
+        ui->p3->setText("3");
+        ui->j3->setText(participants[2].jockey);
+        ui->h3->setText(participants[2].horseName);
+        ui->t3->setText(participants[2].time.toString());
 
-    ui->j6->setText(participants[5].jockey);
-    ui->h6->setText(participants[5].horseName);
+        ui->p4->setText("4");
+        ui->j4->setText(participants[3].jockey);
+        ui->h4->setText(participants[3].horseName);
+        ui->t4->setText(participants[3].time.toString());
+
+        ui->p5->setText("5");
+        ui->j5->setText(participants[4].jockey);
+        ui->h5->setText(participants[4].horseName);
+        ui->t5->setText(participants[4].time.toString());
+
+        ui->p6->setText("6");
+        ui->j6->setText(participants[5].jockey);
+        ui->h6->setText(participants[5].horseName);
+        ui->t6->setText(participants[5].time.toString());
+    }
+    else {
+        ui->Registered->setText("Зарегистрированы");
+        ui->place->hide();
+        ui->time->hide();
+
+        ui->p1->hide();
+        ui->j1->setText(participants[0].jockey);
+        ui->h1->setText(participants[0].horseName);
+        ui->t1->hide();
+
+        ui->p2->hide();
+        ui->j2->setText(participants[1].jockey);
+        ui->h2->setText(participants[1].horseName);
+        ui->t2->hide();
+
+        ui->p3->hide();
+        ui->j3->setText(participants[2].jockey);
+        ui->h3->setText(participants[2].horseName);
+        ui->t3->hide();
+
+        ui->p4->hide();
+        ui->j4->setText(participants[3].jockey);
+        ui->h4->setText(participants[3].horseName);
+        ui->t4->hide();
+
+        ui->p5->hide();
+        ui->j5->setText(participants[4].jockey);
+        ui->h5->setText(participants[4].horseName);
+        ui->t5->hide();
+
+        ui->p6->hide();
+        ui->j6->setText(participants[5].jockey);
+        ui->h6->setText(participants[5].horseName);
+        ui->t6->hide();
+    }
 
     qDebug() << contest.getFullDate() << contest.getFullTime();
     qDebug() << hippodrome.getName();

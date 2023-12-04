@@ -14,6 +14,7 @@ SOURCES += \
     communication.cpp \
     contest.cpp \
     curve.cpp \
+    formadminaccount.cpp \
     formcontests.cpp \
     formdetailinfo.cpp \
     formnoconnection.cpp \
@@ -32,6 +33,7 @@ HEADERS += \
     communication.h \
     contest.h \
     curve.h \
+    formadminaccount.h \
     formcontests.h \
     formdetailinfo.h \
     formnoconnection.h \
@@ -45,6 +47,7 @@ HEADERS += \
 
 FORMS += \
     authform.ui \
+    formadminaccount.ui \
     formcontests.ui \
     formdetailinfo.ui \
     formnoconnection.ui \

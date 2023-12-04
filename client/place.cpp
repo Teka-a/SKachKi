@@ -3,7 +3,6 @@
 Place::Place(QString id, QString name, QString address, QString description)
 {
     this->id = id.toInt();
-    this->randomNum = generateRandomNum();
     this->name = name;
     this->address = address;
     this->description = description;

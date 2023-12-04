@@ -24,7 +24,8 @@ MyTcpServer::MyTcpServer(QObject *parent) : QObject(parent)
         qDebug() << "SKachKi server is not started";
     } else {
         //server_status=1;
-        //qDebug() << f.parse("regForContest&1&3&Joc4", sockets, mTcpSocket);
+        Functions f;
+        qDebug() << f.parse("requestHorsesForContest&1", sockets, mTcpSocket);
 
         qDebug() << "SKachKi server is started";
         //Curve *curveSecp256k1 = Curve::getInstance();
