@@ -6,10 +6,14 @@ services:
     image: postgres
     volumes:
       - /skachki.sql:/docker-entrypoint-initdb.d/skachki.sql
+      - /volume/data:/var/lib/postgresql/data 
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
+    networks:
+      serverLocalNet:
+        ipv4_address: 172.20.0.2
     ports:
       - 54321:5432
   skachki_server:
@@ -21,6 +25,15 @@ services:
       dockerfile: Dockerfile
     ports:
       - 54345:54345
+    networks:
+      serverLocalNet:
+        ipv4_address: 172.20.0.3
     restart: always
     depends_on:
       - skachki_db
+
+networks:
+    serverLocalNet:
+      ipam:
+        config:
+          - subnet: 172.20.0.0/24
