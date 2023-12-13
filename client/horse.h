@@ -16,18 +16,16 @@ private:
     QString sex;
     int age;
     QString owner;
-    int rating;
     bool isAvailable;
     int generateRandomNum();
 public:
-    Horse(QString id, QString name, QString sex, QString age, QString owner, QString rating = "0");
+    Horse(QString id, QString name, QString sex, QString age, QString owner, QString availability);
 
     QString getId();
     QString getName();
     QString getSex();
     QString getAge();
     QString getOwner();
-    QString getRating();
     QString getAvailability();
     QString removeRandomNum();
 };

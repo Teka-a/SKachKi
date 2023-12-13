@@ -229,6 +229,36 @@ void Client::slotServerRead(){
             }
             emit receivedContests(contestsList);
         }
+        else if (list[0] == "horsesList") {
+            QVector<Horse> horsesList;
+            int horses = (list.size() - 1) / 5;
+            for (int i = 0; i < horses; ++i) {
+                Horse horse (list[i * 5 + 1],
+                             list[i * 5 + 2],
+                             list[i * 5 + 3],
+                             list[i * 5 + 4],
+                             list[i * 5 + 5], "true");
+                horsesList.append(horse);
+            }
+            qDebug() << "horseszlist";
+            emit receivedHorses(horsesList);
+        }
+        else if (list[0] == "jockeysList") {
+            QVector<Jockey> jockeysList;
+            int jockeys = (list.size() - 1) / 7;
+            for (int i = 0; i < jockeys; ++i) {
+                Jockey jockey (list[i * 7 + 1],
+                               list[i * 7 + 2],
+                               list[i * 7 + 3],
+                               list[i * 7 + 4],
+                               list[i * 7 + 5],
+                               list[i * 7 + 6],
+                               list[i * 7 + 7]);
+                jockeysList.append(jockey);
+            }
+            qDebug() << "jockeysList";
+            emit receivedJockeys(jockeysList);
+        }
         else if (list[0] == "contestsDetailedInfo") {
             //contestsDetailedInfo & ContId & ContName & ContDate & ContTime & ContRegStatus &
             //                       HippId & HippName & HippAddr & HippDesc
@@ -249,6 +279,42 @@ void Client::slotServerRead(){
             }
             qDebug() << "ee";
             emit receivedContest(contest, hippodrome, participants);
+        }
+        else if (list[0] == "horseDetailedInfo") {
+            Horse horse(list[1], list[2], list[3], list[4], list[5], list[6]);
+            QVector<Contest> contests;
+            int contestsNum = (list.size() - 7) / 6;
+            int start = 7;
+            for  (int i = 0; i < contestsNum; ++i) {
+                Contest contest(list[start],
+                                list[start+1],
+                                list[start+2],
+                                list[start+3],
+                                list[start+4],
+                                list[start+5]);
+                start += 6;
+                contests.append(contest);
+            }
+            emit receivedHorse(horse, contests);
+        }
+        else if (list[0] == "jockeyDetailedInfo") {
+            Jockey jockey(list[1], list[2], list[3], list[4]);
+            QVector<Contest> contests;
+            int contestsNum = (list.size() - 5) / 6;
+            int start = 5;
+            for  (int i = 0; i < contestsNum; ++i) {
+                Contest contest(list[start],
+                                list[start+1],
+                                list[start+2],
+                                list[start+3],
+                                list[start+4],
+                                list[start+5]);
+                start += 6;
+                contests.append(contest);
+            }
+            emit receivedJockey(jockey, contests);
+
+
         }
         else if (list[0] == "contests3") {
             qDebug() << "3 cont getted";
@@ -281,7 +347,7 @@ void Client::slotServerRead(){
                             list[i * 5 + 4],
                             list[i * 5 + 5],
                             list[i * 5 + 6],
-                            list[i * 5 + 7]);
+                            list[i * 5 + 7], "t");
                 horsesList.append(horse);
             }
             emit receivedHorsesForContest(contestId, contestName, horsesList);
@@ -318,6 +384,63 @@ void Client::slotServerRead(){
                 places.append(place);
             }
             emit receivedPlaces(places);
+        }
+        else if (list[0] == "ownerInfo") {
+            QVector<Horse> horsesList;
+            int horses = (list.size() - 3) / 5;
+            for (int i = 0; i < horses; ++i) {
+                Horse horse(list[i * 5 + 3],
+                            list[i * 5 + 4],
+                            list[i * 5 + 5],
+                            list[i * 5 + 6],
+                            list[2],
+                            list[i * 5 + 7]);
+
+                horsesList.append(horse);
+            }
+            qDebug() << "owner";
+            emit receivedOwnerForAccount(list[1], list[2], horsesList);
+        }
+        else if (list[0] == "horseRegistration") {
+            if (list[1] == "success")
+                emit registrationHorseStatus("s");
+            else if (list[1] == "failed")
+                emit registrationHorseStatus("f");
+        }
+        else if (list[0] == "changeHorseAvailability") {
+            if (list[1] == "success")
+                emit changeHorseStatus("s");
+            else if (list[1] == "failed")
+                emit changeHorseStatus("f");
+        }
+        else if (list[0] == "passedNotAddedContests") {
+            QVector<Contest> contestsList;
+            int contests = (list.size() - 1) / 6;
+            for (int i = 0; i < contests; ++i) {
+                Contest cont(list[i * 6 + 1],
+                             list[i * 6 + 2],
+                             list[i * 6 + 3],
+                             list[i * 6 + 4],
+                             list[i * 6 + 5],
+                             list[i * 6 + 6]);
+                contestsList.append(cont);
+            }
+            emit receivedContestsAddInfo(contestsList);
+        }
+        else if (list[0] == "participantsForAddInfo") {
+            QVector<QVector<QString>> participants;
+            int count = (list.size() - 2) / 3;
+            for (int i = 0; i < count; ++i) {
+                QVector<QString> pair {list[i * 3 + 2], list[i * 3 + 3], list[i * 3 + 4]};
+                participants.push_back(pair);
+            }
+            emit receivedContestParticipants(list[1], participants);
+        }
+        else if (list[0] == "infoAddition") {
+            if (list[1] == "success")
+                emit addInfoStatus("s");
+            else if (list[1] == "failed")
+                emit addInfoStatus("f");
         }
     }
 

@@ -8,6 +8,11 @@ FormContests::FormContests(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowTitle("SKachKi");
     ui->mainName->setStyleSheet("QLabel { color : rgb(255, 218, 185); }");
+    ui->name->setStyleSheet("QLabel { color : rgb(255, 218, 185); }");
+    ui->date->setStyleSheet("QLabel { color : rgb(255, 218, 185); }");
+    ui->time->setStyleSheet("QLabel { color : rgb(255, 218, 185); }");
+    ui->place->setStyleSheet("QLabel { color : rgb(255, 218, 185); }");
+    ui->moreInfoCol->setStyleSheet("QLabel { color : rgb(255, 218, 185); }");
     connect(Client::getInstance(), &Client::receivedContests, this, &FormContests::setInfo);
 
 }
@@ -24,7 +29,7 @@ void FormContests::setInfo(QVector<Contest> contests)
     QWidget *window = new QWidget;
 
     QVBoxLayout *layoutMain = new QVBoxLayout(window);
-
+    /*
     QWidget *item = new QWidget;
     QHBoxLayout *layout = new QHBoxLayout(item);
     QLabel *nameCol = new QLabel("Название");
@@ -38,7 +43,7 @@ void FormContests::setInfo(QVector<Contest> contests)
     layout->addWidget(placeCol);
     layout->addWidget(moreInfoCol);
     layoutMain->addWidget(item);
-
+    */
     for (int i = 0; i < contests.size(); ++i) {
         QWidget *item = new QWidget;
         QHBoxLayout *layout = new QHBoxLayout(item);
@@ -48,10 +53,12 @@ void FormContests::setInfo(QVector<Contest> contests)
         QLabel *time = new QLabel(contests[i].getRawTime());
         QLabel *place = new QLabel(contests[i].getPlace());
         QPushButton *moreInfo = new QPushButton("Подробнее");
+        /*
         if (contests[i].isPassed())
             connect(moreInfo, &QPushButton::clicked, this, &FormContests::showMoreInfoPassed);
         else
-            connect(moreInfo, &QPushButton::clicked, this, &FormContests::showMoreInfoFuture);
+            connect(moreInfo, &QPushButton::clicked, this, &FormContests::showMoreInfoFuture);*/
+        connect(moreInfo, &QPushButton::clicked, this, &FormContests::showMoreInfo);
         moreInfo->setProperty("id", contests[i].getId());
         layout->addWidget(name);
         layout->addWidget(date);
@@ -67,6 +74,15 @@ void FormContests::setInfo(QVector<Contest> contests)
 
 }
 
+
+void FormContests::showMoreInfo()
+{
+    QPushButton* buttonSender = qobject_cast<QPushButton*>(sender());
+    qDebug() << buttonSender->property("id");
+    requestDetailedInfoContest(QString::number(buttonSender->property("id").toInt()));
+}
+
+/*
 void FormContests::showMoreInfoFuture()
 {
     QPushButton* buttonSender = qobject_cast<QPushButton*>(sender());
@@ -79,4 +95,4 @@ void FormContests::showMoreInfoPassed()
     QPushButton* buttonSender = qobject_cast<QPushButton*>(sender());
     qDebug() << buttonSender->property("id");
     requestDetailedInfoContest(QString::number(buttonSender->property("id").toInt()));
-}
+}*/

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FormContests</class>
- <widget class="QWidget" name="FormContests">
+ <class>FormJockeys</class>
+ <widget class="QWidget" name="FormJockeys">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>786</width>
-    <height>632</height>
+    <width>948</width>
+    <height>539</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -65,28 +65,42 @@
      <item>
       <widget class="QLabel" name="name">
        <property name="text">
-        <string>Название</string>
+        <string>Имя</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="date">
+      <widget class="QLabel" name="surname">
        <property name="text">
-        <string>Дата</string>
+        <string>Фамилия</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="time">
+      <widget class="QLabel" name="age">
        <property name="text">
-        <string>Время</string>
+        <string>Возраст</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="place">
+      <widget class="QLabel" name="p1">
        <property name="text">
-        <string>Место</string>
+        <string>1 место</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="p2">
+       <property name="text">
+        <string>2 место</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="p3">
+       <property name="text">
+        <string>3 место</string>
        </property>
       </widget>
      </item>
@@ -104,20 +118,15 @@
      <property name="widgetResizable">
       <bool>true</bool>
      </property>
-     <widget class="QWidget" name="scroll">
+     <widget class="QWidget" name="scrollAreaWidgetContents">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>766</width>
-        <height>528</height>
+        <width>928</width>
+        <height>435</height>
        </rect>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="">
-       <property name="sizeConstraint">
-        <enum>QLayout::SetNoConstraint</enum>
-       </property>
-      </layout>
      </widget>
     </widget>
    </item>
