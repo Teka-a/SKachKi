@@ -12,7 +12,7 @@ void ClientDestroyer::initialize(Client * p){
 
 Client::Client(QObject *parent){
     mTcpSocket = new QTcpSocket(this);
-    mTcpSocket->connectToHost("127.0.0.1", 54345);
+    mTcpSocket->connectToHost("192.168.0.90", 54345);
     if(mTcpSocket->waitForConnected() ){
         QString num = "51739109251054544900652827515386315264922377181505051896146948101942003159361";
         this->serverOpenKey.x = (uint256_t)num.toStdString();
