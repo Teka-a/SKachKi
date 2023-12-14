@@ -1,3 +1,4 @@
+
 #include "database.h"
 
 Database * Database::pInstance=0;
@@ -25,9 +26,10 @@ Database * Database::getInstance()
 Database::Database()
 {
     database = QSqlDatabase::addDatabase("QPSQL");
-    database.setDatabaseName("skachki");
-    database.setUserName("server");
-    database.setPassword("S!Pk1_3rriL");
+    database.setHostName("172.20.11.2");
+    database.setDatabaseName("postgres");
+    database.setUserName("postgres");
+    database.setPassword("password");
 
     if (!database.open()){
         qDebug() << "Database is not connected" << database.lastError().text();

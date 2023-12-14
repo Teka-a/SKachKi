@@ -6,6 +6,7 @@ Functions::Functions()
     Curve *secp256k1 = Curve::getInstance();
 }
 
+
 //Authentication
 QString Functions::checkPassword(QString login, QString password)
 {
@@ -187,6 +188,172 @@ QString Functions::sendContestsGeneralInfo()
 }
 
 
+QString Functions::getPlaces(QString jockeyId, QString place)
+{
+    QString responce = "jockeysList";
+    QSqlQuery query;
+    QString queryState = "SELECT COUNT(id) AS c FROM c_u_h "
+                         "WHERE place = :place AND jockey_id = :jockeyId";
+    query.prepare(queryState);
+    query.bindValue(":place", place);
+    query.bindValue(":jockeyId", jockeyId);
+    query.exec();
+    QString c = "";
+    QSqlRecord rec = query.record();
+    const int count = rec.indexOf("c");
+    while(query.next()){
+        c += query.value(count).toString();
+    }
+    return c;
+}
+
+//Jockey info
+//jockeysList&  id & name & surname & age & p1 & p2 & p3
+//              id & name & surname & age & p1 & p2 & p3
+QString Functions::sendJockeysGeneralInfo()
+{
+    QString responce = "jockeysList";
+    QSqlQuery query;
+    QString queryState = "SELECT id, name, surname, birth_date FROM users "
+                         "WHERE status_id = 1";
+    query.prepare(queryState);
+    query.exec();
+
+    QSqlRecord rec = query.record();
+    const int id = rec.indexOf("id");
+    const int name = rec.indexOf("name");
+    const int surname = rec.indexOf("surname");
+    const int date = rec.indexOf("birth_date");
+
+
+    QString jockeys = "";
+    QDate current = QDate::currentDate();
+
+    while(query.next()){
+        int age = current.year() - QDate::fromString(query.value(date).toString(), "yyyy-MM-dd").year();
+        jockeys += "&" + query.value(id).toString() +
+                   "&" + query.value(name).toString() +
+                   "&" + query.value(surname).toString() + "&" + QString::number(age) +
+                   "&" + getPlaces(query.value(id).toString(), "1") +
+                   "&" + getPlaces(query.value(id).toString(), "2") +
+                   "&" + getPlaces(query.value(id).toString(), "3");
+    }
+    responce += jockeys;
+    qDebug() << "Jockeys" << responce;
+    return responce;
+}
+
+QString Functions::sendJockeyDetailedInfo(QString jockeyId)
+{
+    QString responce = "jockeyDetailedInfo";
+    QSqlQuery query;
+    QString queryState = "SELECT id, name, surname, birth_date FROM users "
+                         "WHERE id = :jockeyId";
+    query.prepare(queryState);
+    query.bindValue(":jockeyId", jockeyId);
+    query.exec();
+
+    QSqlRecord rec = query.record();
+    const int idJockey = rec.indexOf("id");
+    const int nameJockey = rec.indexOf("name");
+    const int surnameJockey = rec.indexOf("surname");
+    const int dateBirth = rec.indexOf("birth_date");
+
+    QString jockeyInfo = "";
+    QDate current = QDate::currentDate();
+    while (query.next()) {
+        int age = current.year() - QDate::fromString(query.value(dateBirth).toString(), "yyyy-MM-dd").year();
+        jockeyInfo += "&" + query.value(idJockey).toString() +
+                     "&" + query.value(nameJockey).toString() +
+                     "&" + query.value(surnameJockey).toString() +
+                     "&" + QString::number(age);
+    }
+    qDebug() << "jockey info" << jockeyInfo;
+    responce += jockeyInfo;
+    queryState = "SELECT contest_id, c_u_h.place AS place_stat, contests.name AS name, date, time, hippodrome.name AS place FROM c_u_h "
+                 "JOIN contests ON contests.id=c_u_h.contest_id "
+                 "JOIN hippodrome ON hippodrome.id=contests.hippodrome_id "
+                 "WHERE jockey_id = :jockeyId";
+    query.prepare(queryState);
+    query.bindValue(":jockeyId", jockeyId);
+    query.exec();
+    rec = query.record();
+    const int id = rec.indexOf("contest_id");
+    const int status = rec.indexOf("place_stat");
+    const int name = rec.indexOf("name");
+    const int date = rec.indexOf("date");
+    const int time = rec.indexOf("time");
+    const int place = rec.indexOf("place");
+    QString result = "";
+    QString contests = "";
+    while(query.next()) {
+
+        qDebug() << "Date" << current << QDate::fromString(query.value(date).toString(), "yyyy-MM-dd");
+        if (current <= QDate::fromString(query.value(date).toString(), "yyyy-MM-dd"))
+            result = "Зарегистрирован";
+        else {
+            qDebug() << query.value(status).toString() << (query.value(status).toString() == "1");
+            if (query.value(status).toString() == "1")
+                result = "Победитель";
+            else if (query.value(status).toString() == "2" || query.value(status).toString() == "3")
+                result = "Призёр";
+            else
+                result = "Участник";
+        }
+        contests += "&" + query.value(id).toString() +
+                    "&" + query.value(name).toString() +
+                    "&" + query.value(date).toString() +
+                    "&" + query.value(time).toString() +
+                    "&" + query.value(place).toString() +
+                    "&" + result;
+    }
+
+    qDebug() << contests;
+    if (contests != "")
+        responce += contests;
+    else
+        responce += "&0&no&2024-09-27&14:00:00.000&no&no";
+    qDebug() << responce;
+    return responce;
+}
+
+
+//Horses info
+//horsesList&   id & name & sex & age & owner &
+//              id & name & sex & age & owner &
+QString Functions::sendHorsesGeneralInfo()
+{
+    QString responce = "horsesList";
+
+    QSqlQuery query;
+    QString queryState = "SELECT h.id AS id, h.name AS name, h.sex AS sex, h.birth_date AS date, users.name AS ownerName, users.surname AS ownerSurname FROM horses AS h "
+                         "JOIN users ON h.owner_id = users.id";
+    query.prepare(queryState);
+    query.exec();
+
+    QSqlRecord rec = query.record();
+    const int id = rec.indexOf("id");
+    const int name = rec.indexOf("name");
+    const int sex = rec.indexOf("sex");
+    const int date = rec.indexOf("date");
+    const int ownerName = rec.indexOf("ownerName");
+    const int ownerSurname = rec.indexOf("ownerSurname");
+
+    QString horses = "";
+    QDate current = QDate::currentDate();
+    while (query.next()) {
+        int age = current.year() - QDate::fromString(query.value(date).toString(), "yyyy-MM-dd").year();
+        horses += "&" + query.value(id).toString() +
+                  "&" + query.value(name).toString() +
+                  "&" + query.value(sex).toString() +
+                  "&" + QString::number(age) +
+                  "&" + query.value(ownerName).toString() + " " + query.value(ownerSurname).toString();
+    }
+    responce += horses;
+    qDebug() << "Horses" << responce;
+    return responce;
+}
+
 //contestsDetailedInfo & ContId & ContName & ContDate & ContTime & ContRegStatus &
 //                       HippId & HippName & HippAddr & HippDesc
 //                       Horse & Jockey & time & place
@@ -249,8 +416,7 @@ QString Functions::sendContestDetailedInfo(QString contestId)
     queryState = "SELECT c_u_h.chip_time AS time, c_u_h.place AS place, horses.name AS horse, users.name AS name, users.surname AS surname FROM c_u_h "
                  "JOIN horses ON horses.id = c_u_h.horse_id "
                  "JOIN users  ON users.id = c_u_h.jockey_id "
-                 "WHERE contest_id = :contestId"
-                 "ORDER BY time DESC";
+                 "WHERE contest_id = :contestId";
     query.prepare(queryState);
     query.bindValue(":contestId", contestId);
     //qDebug() << query.executedQuery();
@@ -284,9 +450,91 @@ QString Functions::sendContestDetailedInfo(QString contestId)
         participants += "&-&-&00:00:00&-";
     }
     participants += "&";
-    //qDebug() << participants;
+    qDebug() << participants;
     responce += participants;
     qDebug() << responce;
+    return responce;
+}
+
+//horseDetailedInfo &
+QString Functions::sendHorseDetailedInfo(QString horseId)
+{
+    QString responce = "horseDetailedInfo";
+    //get info about horse: name, sex, age, owner
+    QSqlQuery query;
+    QString queryState = "SELECT h.id AS id, h.name AS name, h.sex AS sex, h.birth_date AS date, users.name AS ownerName, users.surname AS ownerSurname, h.available FROM horses AS h "
+                         "JOIN users ON h.owner_id = users.id "
+                         "WHERE h.id = :horseId";
+    query.prepare(queryState);
+    query.bindValue(":horseId", horseId);
+    query.exec();
+
+    QSqlRecord rec = query.record();
+    const int idHorse = rec.indexOf("id");
+    const int nameHorse = rec.indexOf("name");
+    const int sexHorse = rec.indexOf("sex");
+    const int dateHorse = rec.indexOf("date");
+    const int ownerNameHorse = rec.indexOf("ownerName");
+    const int ownerSurnameHorse = rec.indexOf("ownerSurname");
+    const int available = rec.indexOf("available");
+
+    QString horseInfo = "";
+    QDate current = QDate::currentDate();
+    while (query.next()) {
+        int age = current.year() - QDate::fromString(query.value(dateHorse).toString(), "yyyy-MM-dd").year();
+        horseInfo += "&" + query.value(idHorse).toString() +
+                  "&" + query.value(nameHorse).toString() +
+                  "&" + query.value(sexHorse).toString() +
+                  "&" + QString::number(age) +
+                  "&" + query.value(ownerNameHorse).toString() + " " + query.value(ownerSurnameHorse).toString() +
+                  "&" + query.value(available).toString() ;
+    }
+    qDebug() << "horse info" << horseInfo;
+    responce += horseInfo;
+    //get info about contests            
+    queryState = "SELECT contest_id, c_u_h.place AS place_stat, contests.name AS name, date, time, hippodrome.name AS place FROM c_u_h "
+                 "JOIN contests ON contests.id=c_u_h.contest_id "
+                 "JOIN hippodrome ON hippodrome.id=contests.hippodrome_id "
+                 "WHERE horse_id = :horseId";
+    query.prepare(queryState);
+    query.bindValue(":horseId", horseId);
+    query.exec();
+    rec = query.record();
+    const int id = rec.indexOf("contest_id");
+    const int status = rec.indexOf("place_stat");
+    const int name = rec.indexOf("name");
+    const int date = rec.indexOf("date");
+    const int time = rec.indexOf("time");
+    const int place = rec.indexOf("place");
+    QString result = "";
+    QString contests = "";
+    while(query.next()) {
+
+        qDebug() << "Date" << current << QDate::fromString(query.value(date).toString(), "yyyy-MM-dd");
+        if (current <= QDate::fromString(query.value(date).toString(), "yyyy-MM-dd"))
+            result = "Зарегистрирован";
+        else {
+            qDebug() << query.value(status).toString() << (query.value(status).toString() == "1");
+            if (query.value(status).toString() == "1")
+                result = "Победитель";
+            else if (query.value(status).toString() == "2" || query.value(status).toString() == "3")
+                result = "Призёр";
+            else
+                result = "Участник";
+        }
+        contests += "&" + query.value(id).toString() +
+                    "&" + query.value(name).toString() +
+                    "&" + query.value(date).toString() +
+                    "&" + query.value(time).toString() +
+                    "&" + query.value(place).toString() +
+                    "&" + result;
+    }
+
+    qDebug() << contests;
+    if (contests != "")
+        responce += contests;
+    else
+        responce += "&0&no&2024-09-27&14:00:00.000&no&no";
     return responce;
 }
 
@@ -596,6 +844,70 @@ QString Functions::sendPlaces()
     return responce;
 }
 
+
+QString Functions::sendOwnerInfo(QString login)
+{
+    //owner: id, name, surname
+    QString responce = "ownerInfo&";
+    QSqlQuery query;
+    QString queryState = "SELECT id, name, surname FROM users "
+                         "WHERE login = :login";
+    qDebug() << login;
+    query.prepare(queryState);
+    query.bindValue(":login", login);
+    query.exec();
+    qDebug() << query.executedQuery();
+    QSqlRecord rec = query.record();
+    const int id = rec.indexOf("id");
+    const int surname = rec.indexOf("surname");
+    const int name = rec.indexOf("name");
+    QString ownerInfo = "";
+    QString ownerId = "";
+    while (query.next()) {
+        ownerId = query.value(id).toString();
+        ownerInfo = query.value(id).toString() + "&" + query.value(name).toString() + " " + query.value(surname).toString();
+    }
+    qDebug() << ownerId;
+    responce += ownerInfo;
+    //horses: id, name, sex, age, available
+
+    queryState = "SELECT * FROM horses "
+                 "WHERE owner_id = :ownerId";
+    query.prepare(queryState);
+    query.bindValue(":ownerId", ownerId);
+    query.exec();
+    rec = query.record();
+    const int idHorse = rec.indexOf("id");
+    const int nameHorse = rec.indexOf("name");
+    const int dateHorse = rec.indexOf("birth_date");
+    const int sexHorse = rec.indexOf("sex");
+    const int availableHorse = rec.indexOf("available");
+    QString horses = "";
+    QDate current = QDate::currentDate();
+    while (query.next()) {
+        int age = current.year() - QDate::fromString(query.value(dateHorse).toString(), "yyyy-MM-dd").year();
+
+        horses += "&" + query.value(id).toString() +
+                  "&" + query.value(nameHorse).toString() +
+                  "&" + query.value(sexHorse).toString() +
+                  "&" + QString::number(age) +
+                  "&" + query.value(availableHorse).toString();
+    }
+    qDebug() << "horses" << horses;
+    responce += horses;
+
+    return responce;
+
+
+}
+
+
+QString Functions::sendJockeyInfo(QString login)
+{
+
+}
+
+
 QString Functions::regNewPlace(QString name, QString address, QString description)
 {
     QString responce = "placeRegistration&";
@@ -608,8 +920,78 @@ QString Functions::regNewPlace(QString name, QString address, QString descriptio
     query.bindValue(":description", description);
     query.exec();
 
-    qDebug() << "insert" << query.executedQuery();
+    //qDebug() << "insert" << query.executedQuery();
     queryState = "SELECT id FROM hippodrome "
+                 "WHERE name = :name";
+    query.prepare(queryState);
+    query.bindValue(":name", name);
+    //qDebug() << query.executedQuery();
+    query.exec();
+    int c = 0;
+    while(query.next()){
+        c += 1;
+    }
+    if (c > 0) {
+        responce += "success";
+    }
+    else {
+        responce += "failed";
+    }
+    return responce;
+}
+
+
+QString Functions::changeHorseAvailability(QString horseId, QString status)
+{
+    QString responce = "changeHorseAvailability&";
+    QSqlQuery query;
+    QString queryState = "UPDATE horses "
+                         "SET available = :status "
+                         "WHERE id = :horseId";
+    query.prepare(queryState);
+    query.bindValue(":horseId", horseId);
+    query.bindValue(":status", status);
+    query.exec();
+
+    queryState = "SELECT available FROM horses "
+                 "WHERE id = :horseId";
+    query.prepare(queryState);
+    query.bindValue(":horseId", horseId);
+    query.exec();
+
+    bool isChanged = false;
+    while (query.next()) {
+        if (query.value(0).toString() == status)
+            isChanged = true;
+    }
+    qDebug() << "res is changed" << isChanged;
+
+    if (isChanged)
+        responce += "success";
+    else
+        responce += "failed";
+
+    return responce;
+}
+
+
+QString Functions::regNewHorse(QString name, QString sex, QString ownerId, QString available, QString birthDate)
+{
+    QString responce = "horseRegistration&";
+    QSqlQuery query;
+    QString queryState = "INSERT INTO horses (name, sex, owner_id, available, birth_date) "
+                         "VALUES (:name, :sex, :ownerId, :available, :birthDate)";
+    query.prepare(queryState);
+    query.bindValue(":name", name);
+    query.bindValue(":sex", sex);
+    query.bindValue(":ownerId", ownerId);
+    query.bindValue(":available", available);
+    query.bindValue(":birthDate", birthDate);
+    query.exec();
+
+    qDebug() << "insert" << query.executedQuery();
+
+    queryState = "SELECT id FROM horses "
                  "WHERE name = :name";
     query.prepare(queryState);
     query.bindValue(":name", name);
@@ -628,6 +1010,138 @@ QString Functions::regNewPlace(QString name, QString address, QString descriptio
     return responce;
 }
 
+
+QString Functions::sendPassedNotAddedContests()
+{
+    QString responce = "passedNotAddedContests";
+    QSqlQuery query;
+    QString queryState = "SELECT c.id, c.name AS contestname, c.date, c.time, c.status, h.name AS placename FROM contests AS c "
+                         "JOIN hippodrome AS h ON h.id = c.hippodrome_id "
+                         "WHERE c.date < now()::date AND c.info = 'not added'";
+    query.prepare(queryState);
+    query.exec();
+    QSqlRecord rec = query.record();
+    const int id = rec.indexOf("id");
+    const int name = rec.indexOf("contestname");
+    const int date = rec.indexOf("date");
+    const int time = rec.indexOf("time");
+    const int status = rec.indexOf("status");
+    const int place = rec.indexOf("placename");
+
+
+    QString contests = "";
+    while(query.next()){
+        contests += "&" + query.value(id).toString() +
+                    "&" + query.value(name).toString() +
+                    "&" + query.value(date).toString() +
+                    "&" + query.value(time).toString() +
+                    "&" + query.value(place).toString() +
+                    "&" + query.value(status).toString();
+    }
+    qDebug() << contests;
+    if (contests == "")
+        responce += "&0&no&2024-08-13&04:05:00.000&no&no";
+    else
+        responce += contests;
+    return responce;
+}
+
+//id, place, time
+QString Functions::addInfo(QStringList info)
+{
+    QString responce = "infoAddition&";
+    QSqlQuery query;
+    QString queryState = "";
+    int count = (info.size() - 1) / 3;
+    //set info
+    for (int i = 0; i < count; ++i) {
+        queryState = "UPDATE c_u_h "
+                     "SET place = :place, "
+                     "chip_time = :time "
+                     "WHERE id = :pairId";
+        query.prepare(queryState);
+        query.bindValue(":pairId", info[i * 3 + 1]);
+        query.bindValue(":place", info[i * 3 + 2]);
+        query.bindValue(":time", info[i * 3 + 3]);
+        query.exec();
+    }
+
+    queryState = "SELECT contest_id FROM c_u_h "
+                 "WHERE id = :pairId";
+    query.prepare(queryState);
+    query.bindValue(":pairId", info[1]);
+    query.exec();
+    QSqlRecord rec = query.record();
+    const int id = rec.indexOf("contest_id");
+    QString contId = "";
+    while (query.next()) {
+        contId = query.value(id).toString();
+    }
+    queryState = "UPDATE contests "
+                 "SET info = 'added' "
+                 "WHERE id = :contId";
+    query.prepare(queryState);
+    query.bindValue(":contId", contId);
+    query.exec();
+
+    queryState = "SELECT info FROM contests "
+                 "WHERE id = :contId";
+    query.prepare(queryState);
+    query.bindValue(":contId", contId);
+    query.exec();
+    rec = query.record();
+    const int infoAdded = rec.indexOf("info");
+    bool infoStat = false;
+    while (query.next()) {
+        if (query.value(infoAdded).toString() == "added")
+            infoStat = true;
+    }
+    if (infoStat)
+        responce += "success";
+    else
+        responce += "failed";
+    //update cont status to added
+    return responce;
+}
+
+// contest name & idPair & jocNameSurname & horseName
+QString Functions::sendParticipantsForAddInfo(QString contestId)
+{
+    QString responce = "participantsForAddInfo&";
+    QSqlQuery query;
+    QString queryState = "SELECT c.id AS id, ct.name AS contestName, h.name AS horse, u.name AS jocName, u.surname AS jocSurname FROM c_u_h AS c "
+                         "JOIN horses AS h ON h.id=c.horse_id "
+                         "JOIN users AS u ON u.id = c.jockey_id "
+                         "JOIN contests AS ct ON ct.id=c.contest_id "
+                         "WHERE c.contest_id = :contestId";
+    query.prepare(queryState);
+    query.bindValue(":contestId", contestId);
+    query.exec();
+    QSqlRecord rec = query.record();
+    const int id = rec.indexOf("id");
+    const int contestName = rec.indexOf("contestName");
+    const int horseName = rec.indexOf("horse");
+    const int jockeyName = rec.indexOf("jocName");
+    const int jockeySurname = rec.indexOf("jocSurname");
+
+
+    QString ctName = "";
+
+    QString participants = "";
+    while(query.next()){
+        ctName = query.value(contestName).toString();
+        participants += "&" + query.value(id).toString() +
+                        "&" + query.value(horseName).toString() +
+                        "&" + query.value(jockeyName).toString() + " " + query.value(jockeySurname).toString();
+    }
+    qDebug() << ctName << participants;
+    responce += ctName;
+    if (participants == "")
+        responce += "&0&no&no";
+    else
+        responce += participants;
+    return responce;
+}
 
 QString Functions::parse(QString dataFromClient, QMap<QTcpSocket*, QVector<QString>> &sockets, QTcpSocket* socket)
 {
@@ -683,6 +1197,22 @@ QString Functions::parse(QString dataFromClient, QMap<QTcpSocket*, QVector<QStri
             return sendContestDetailedInfo(list[1]);
         }
     }
+    else if (list[0] == "requestHorse") {
+        if (list[1] == "generalInfo") {
+            return sendHorsesGeneralInfo();
+        }
+        else {
+            return sendHorseDetailedInfo(list[1]);
+        }
+    }
+    else if (list[0] == "requestJockey") {
+        if (list[1] == "generalInfo") {
+            return sendJockeysGeneralInfo();
+        }
+        else {
+            return sendJockeyDetailedInfo(list[1]);
+        }
+    }
     else if (list[0] == "requestHorsesForContest") {
         return sendHorsesForContest(list[1]);
     }
@@ -700,8 +1230,26 @@ QString Functions::parse(QString dataFromClient, QMap<QTcpSocket*, QVector<QStri
     else if (list[0] == "regNewPlace") {
         return regNewPlace(list[1], list[2], list[3]);
     }
+    else if (list[0] == "regNewHorse") {
+        return regNewHorse(list[1], list[2], list[3], list[4], list[5]);
+    }
     else if (list[0] == "requestPlaces") {
         return sendPlaces();
+    }
+    else if (list[0] == "requestOwnerInfo") {
+        return sendOwnerInfo(list[1]);
+    }
+    else if (list[0] == "changeHorseAvailability") {
+        return changeHorseAvailability(list[1], list[2]);
+    }
+    else if (list[0] == "requestPassedNotAddedContests") {
+        return sendPassedNotAddedContests();
+    }
+    else if (list[0] == "requestParticipants") {
+        return sendParticipantsForAddInfo(list[1]);
+    }
+    else if (list[0] == "setInfo") {
+        return addInfo(list);
     }
 
     return "get it!";
