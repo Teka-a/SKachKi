@@ -28,7 +28,7 @@ private:
     Ui::FormRegContest *ui;
     int horseSelectedId = -1;
     int contestId = -1;
-    QVector<Horse> horses {Horse("1", "HorseDefault", "HorseDefault", "HorseDefault", "HorseDefault"), Horse("1", "HorseDefault", "HorseDefault", "HorseDefault", "HorseDefault")};
+    QVector<Horse> horses {Horse("1", "HorseDefault", "HorseDefault", "HorseDefault", "HorseDefault", "t"), Horse("1", "HorseDefault", "HorseDefault", "HorseDefault", "HorseDefault", "t")};
 };
 
 #endif // FORMREGCONTEST_H

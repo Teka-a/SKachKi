@@ -14,10 +14,18 @@ SOURCES += \
     communication.cpp \
     contest.cpp \
     curve.cpp \
+    formaddinfo.cpp \
     formadminaccount.cpp \
     formcontests.cpp \
+    formcontestsaddinfo.cpp \
     formdetailinfo.cpp \
+    formdetailinfohorse.cpp \
+    formdetailinfojockey.cpp \
+    formhorses.cpp \
+    formjockeyaccount.cpp \
+    formjockeys.cpp \
     formnoconnection.cpp \
+    formowneraccount.cpp \
     formregcontest.cpp \
     horse.cpp \
     jockey.cpp \
@@ -33,10 +41,18 @@ HEADERS += \
     communication.h \
     contest.h \
     curve.h \
+    formaddinfo.h \
     formadminaccount.h \
     formcontests.h \
+    formcontestsaddinfo.h \
     formdetailinfo.h \
+    formdetailinfohorse.h \
+    formdetailinfojockey.h \
+    formhorses.h \
+    formjockeyaccount.h \
+    formjockeys.h \
     formnoconnection.h \
+    formowneraccount.h \
     formregcontest.h \
     horse.h \
     jockey.h \
@@ -47,10 +63,18 @@ HEADERS += \
 
 FORMS += \
     authform.ui \
+    formaddinfo.ui \
     formadminaccount.ui \
     formcontests.ui \
+    formcontestsaddinfo.ui \
     formdetailinfo.ui \
+    formdetailinfohorse.ui \
+    formdetailinfojockey.ui \
+    formhorses.ui \
+    formjockeyaccount.ui \
+    formjockeys.ui \
     formnoconnection.ui \
+    formowneraccount.ui \
     formregcontest.ui \
     mainform.ui
 

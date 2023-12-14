@@ -6,6 +6,7 @@
 #include <QByteArray>
 #include <QDebug>
 #include <QVector>
+#include <QPair>
 #include <QMap>
 #include <QCoreApplication>
 #include <QString>
@@ -113,15 +114,30 @@ signals:
     void receivedShortTermOpenKey(QString login, Point longTermOpenKey, Point shortTermOpenKey);
     void receivedAuthResult(QString status, QString userStatus);
 
+    void receivedContestsAddInfo(QVector<Contest> contests);
+    void receivedContestParticipants(QString contestName, QVector<QVector<QString>> particiants);
+
     void receivedContests(QVector<Contest> contests);
+    void receivedHorses(QVector<Horse> horses);
+    void receivedJockeys(QVector<Jockey> jockeys);
+
     void receivedContest(Contest contest, Place hippodrome, QVector<ParticipantPair> participants);
+    void receivedHorse(Horse horse, QVector<Contest> contests);
+    void receivedJockey(Jockey jockey, QVector<Contest> contests);
+
+
     void receivedPlaces(QVector<Place> places);
     void receivedFutureContestsForMain(QVector<Contest> contests);
     void receivedHorsesForContest(QString contestId, QString contestName, QVector<Horse> horsesList);
     void registrationStatus(QString status);
     void registrationContestStatus(QString status);
     void registrationPlaceStatus(QString status);
+    void registrationHorseStatus(QString status);
+    void changeHorseStatus(QString status);
+    void addInfoStatus(QString status);
 
+    void receivedOwnerForAccount(QString id, QString owner, QVector<Horse> horses);
+    void receivedJockeyForAccount(QString id, QString jockey, QVector<Contest> contests);
 public slots:
     void slotServerRead();
 };

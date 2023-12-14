@@ -141,3 +141,9 @@ void FormAdminAccount::on_pushButton_3_clicked()
     regNewPlace(placeName, placeAddress, placeDesc);
 }
 
+
+void FormAdminAccount::on_pushButton_4_clicked()
+{
+    requestPassedNotAddedContests();
+}
+

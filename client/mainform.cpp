@@ -12,8 +12,15 @@ MainForm::MainForm(QWidget *parent) :
 
     ui->centralContest->setStyleSheet("QGroupBox::title{font-size:40pt;}");
     contestsWindow = new FormContests;
+    horsesWindow = new FormHorses;
+    jockeysWindow = new FormJockeys;
     infoContestWindow = new FormDetailInfo;
+    infoHorseWindow = new FormDetailInfoHorse;
+    infoJockeyWindow = new FormDetailInfoJockey;
     adminPanel = new FormAdminAccount;
+    ownerPanel = new FormOwnerAccount;
+    jockeyPanel = new FormJockeyAccount;
+    addInfoWindow = new FormContestsAddInfo;
 
     authForm = new AuthForm;
     authForm->show();
@@ -164,10 +171,10 @@ void MainForm::on_accountButton_clicked()
         //adminPanel->show();
     }
     else if (Client::getInstance()->getUserStatus() == "owner") {
-
+        requestOwnerInfo();
     }
     else if (Client::getInstance()->getUserStatus() == "jockey") {
-
+        requestJockeyInfo();
     }
 }
 
@@ -183,5 +190,19 @@ void MainForm::on_rightContestMoreInfo_clicked()
 {
     qDebug() << ui->rightContestMoreInfo->property("id").toInt();
     requestDetailedInfoContest(QString::number(ui->rightContestMoreInfo->property("id").toInt()));
+}
+
+
+void MainForm::on_horsesButton_clicked()
+{
+    qDebug() << "horses";
+    requestGeneralInfoHorses();
+}
+
+
+void MainForm::on_jockeysButton_clicked()
+{
+    qDebug() << "jockeys";
+    requestGeneralInfoJockeys();
 }
 

@@ -1,16 +1,17 @@
 #include "horse.h"
 
-Horse::Horse(QString id, QString name, QString sex, QString age, QString owner, QString rating)
+Horse::Horse(QString id, QString name, QString sex, QString age, QString owner, QString availability)
 {
     this->id = id.toInt();
     this->randomNum = generateRandomNum();
-
-
+    if (availability == "true" || availability == "t")
+        this->isAvailable = true;
+    else
+        this->isAvailable = false;
     this->name = name;
     this->sex = sex;
     this->age = age.toInt();
     this->owner = owner;
-    this->rating = rating.toInt();
 }
 
 
@@ -60,7 +61,11 @@ QString Horse::getOwner()
     return this->owner;
 }
 
-QString Horse::getRating()
+QString Horse::getAvailability()
 {
-    return QString::number(this->rating);
+    qDebug() << this->isAvailable;
+    if (this->isAvailable)
+        return "да";
+    else
+        return "нет";
 }

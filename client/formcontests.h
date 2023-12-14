@@ -20,8 +20,9 @@ public:
     ~FormContests();
 private slots:
     void setInfo(QVector<Contest> contests);
-    void showMoreInfoFuture();
-    void showMoreInfoPassed();
+    void showMoreInfo();
+    //void showMoreInfoFuture();
+    //void showMoreInfoPassed();
 private:
     Ui::FormContests *ui;
 };

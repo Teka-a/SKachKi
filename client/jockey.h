@@ -18,18 +18,20 @@ private:
     QString name;
     QString surname;
     QString age;
-    QString phone;
-    QString rating;
+    QString p1;
+    QString p2;
+    QString p3;
 
     int generateRandomNum();
 public:
-    Jockey(QString id, QString name, QString surname, QString age, QString phone, QString rating);
+    Jockey(QString id, QString name, QString surname, QString age, QString p1 = "0", QString p2 = "0", QString p3 = "0");
 
     QString getId();
     QString getName();
     QString getAge();
-    QString getPhone();
-    QString getRating();
+    QString getPlaces1();
+    QString getPlaces2();
+    QString getPlaces3();
     QString getSurname();
     QString removeRandomNum();
 };
