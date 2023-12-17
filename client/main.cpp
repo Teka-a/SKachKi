@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
 
     qApp->setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }");
     QTcpSocket *mTcpSocket = new QTcpSocket();
-    mTcpSocket->connectToHost("192.168.0.90", 54345);
+    mTcpSocket->connectToHost("192.168.0.5", 54345);
     bool connected = mTcpSocket->waitForConnected();
     mTcpSocket->close();
     if (!connected) {
