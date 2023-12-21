@@ -66,6 +66,11 @@ public:
     QString parse(QString dataFromClient, QMap<QTcpSocket*, QVector<QString>> &sockets, QTcpSocket* socket);
     QString convertTextToHex(QString text);
 
+    void deleteTestUser();
+    void deleteTestParticipant();
+    void deleteTestPlace();
+    void deleteTestHorse();
+    void deleteTestContest();
 
 };
 
