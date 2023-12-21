@@ -6,6 +6,46 @@ Functions::Functions()
     Curve *secp256k1 = Curve::getInstance();
 }
 
+void Functions::deleteTestUser()
+{
+    QSqlQuery query;
+    QString queryState = "DELETE FROM users "
+                         "WHERE login = 'Test'";
+    query.prepare(queryState);
+    query.exec();
+}
+void Functions::deleteTestParticipant()
+{
+    QSqlQuery query;
+    QString queryState = "DELETE FROM c_u_h "
+                         "WHERE contest_id = 4 AND horse_id = 5 AND jockey_id = 3";
+    query.prepare(queryState);
+    query.exec();
+}
+void Functions::deleteTestPlace()
+{
+    QSqlQuery query;
+    QString queryState = "DELETE FROM hippodrome "
+                         "WHERE name = 'Test'";
+    query.prepare(queryState);
+    query.exec();
+}
+void Functions::deleteTestHorse()
+{
+    QSqlQuery query;
+    QString queryState = "DELETE FROM horses "
+                         "WHERE name = 'Test'";
+    query.prepare(queryState);
+    query.exec();
+}
+void Functions::deleteTestContest()
+{
+    QSqlQuery query;
+    QString queryState = "DELETE FROM contests "
+                         "WHERE name = 'Test'";
+    query.prepare(queryState);
+    query.exec();
+}
 
 //Authentication
 QString Functions::checkPassword(QString login, QString password)
